@@ -1,0 +1,61 @@
+# Environment files
+.env
+.env.local
+.env.production
+.env.staging
+
+# Build artifacts
+truthsocial-bot
+truthsocial-bot-*
+*.exe
+dist/
+build/
+bin/
+
+# Go specific
+*.mod.sum
+vendor/
+
+# Logs
+logs/
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Docker
+.dockerignore
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Configuration backups
+*.bak
+*.backup
+
+# Test coverage
+coverage.out
+coverage.html
+
+# Dependencies
+node_modules/ 
