@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"truthsocial-go/client"
+	"github.com/nicolas-martin/truthsocial-go/client"
 
 	"github.com/olekukonko/tablewriter"
 )
