@@ -11,6 +11,56 @@ A Go library for interacting with Truth Social's API, providing functionality to
 - 🛡️ **Anti-Detection** - Uses CycleTLS for browser-like requests
 - 📊 **Beautiful Tables** - Formatted output using tablewriter for CLI display
 
+## Installation
+
+```bash
+go get github.com/nicolas-martin/truthsocial-go@v1.0.0
+```
+
+## Usage as a Library
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+    "time"
+
+    "github.com/nicolas-martin/truthsocial-go/client"
+)
+
+func main() {
+    ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+    defer cancel()
+
+    // Create client
+    tsClient, err := client.NewClient(ctx, "your_username", "your_password")
+    if err != nil {
+        log.Fatalf("Failed to create client: %v", err)
+    }
+    defer tsClient.Close()
+
+    // Look up a user
+    account, err := tsClient.Lookup(ctx, "realDonaldTrump")
+    if err != nil {
+        log.Fatalf("Failed to lookup user: %v", err)
+    }
+    
+    fmt.Printf("User: @%s (%s)\n", account.Username, account.DisplayName)
+    fmt.Printf("Followers: %d\n", account.FollowersCount)
+
+    // Fetch posts
+    posts, err := tsClient.PullStatuses(ctx, "truthsocial", true, 10)
+    if err != nil {
+        log.Fatalf("Failed to fetch posts: %v", err)
+    }
+    
+    fmt.Printf("Found %d posts\n", len(posts))
+}
+```
+
 ## Quick Start
 
 ### Using the Command Line Interface
