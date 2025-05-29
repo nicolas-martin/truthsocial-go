@@ -90,7 +90,17 @@ func (c *Client) authenticate(_ context.Context) error {
 	}
 
 	if resp.Status != 200 {
-		return fmt.Errorf("authentication failed: status %d - %s", resp.Status, resp.Body)
+		// Check if this is a Cloudflare block
+		if resp.Status == 403 && strings.Contains(resp.Body, "Cloudflare") {
+			return fmt.Errorf("blocked by Cloudflare (status 403) - try using a VPN or different IP address")
+		}
+
+		// For other errors, show a truncated response
+		body := resp.Body
+		if len(body) > 200 {
+			body = body[:200] + "..."
+		}
+		return fmt.Errorf("authentication failed: status %d - %s", resp.Status, body)
 	}
 
 	var authResp AuthResponse
@@ -131,7 +141,17 @@ func (c *Client) Lookup(ctx context.Context, username string) (*Account, error) 
 	}
 
 	if resp.Status != 200 {
-		return nil, fmt.Errorf("account lookup failed: status %d - %s", resp.Status, resp.Body)
+		// Check if this is a Cloudflare block
+		if resp.Status == 403 && strings.Contains(resp.Body, "Cloudflare") {
+			return nil, fmt.Errorf("blocked by Cloudflare (status 403) - try using a VPN or different IP address")
+		}
+
+		// For other errors, show a truncated response
+		body := resp.Body
+		if len(body) > 200 {
+			body = body[:200] + "..."
+		}
+		return nil, fmt.Errorf("account lookup failed: status %d - %s", resp.Status, body)
 	}
 
 	var account Account
@@ -196,7 +216,17 @@ func (c *Client) PullStatuses(ctx context.Context, username string, excludeRepli
 		}
 
 		if resp.Status != 200 {
-			return nil, fmt.Errorf("statuses request failed: status %d - %s", resp.Status, resp.Body)
+			// Check if this is a Cloudflare block
+			if resp.Status == 403 && strings.Contains(resp.Body, "Cloudflare") {
+				return nil, fmt.Errorf("blocked by Cloudflare (status 403) - try using a VPN or different IP address")
+			}
+
+			// For other errors, show a truncated response
+			body := resp.Body
+			if len(body) > 200 {
+				body = body[:200] + "..."
+			}
+			return nil, fmt.Errorf("statuses request failed: status %d - %s", resp.Status, body)
 		}
 
 		var statuses []Status
@@ -265,7 +295,17 @@ func (c *Client) GetStatuses(ctx context.Context, accountID string, limit int) (
 	}
 
 	if resp.Status != 200 {
-		return nil, fmt.Errorf("statuses request failed: status %d - %s", resp.Status, resp.Body)
+		// Check if this is a Cloudflare block
+		if resp.Status == 403 && strings.Contains(resp.Body, "Cloudflare") {
+			return nil, fmt.Errorf("blocked by Cloudflare (status 403) - try using a VPN or different IP address")
+		}
+
+		// For other errors, show a truncated response
+		body := resp.Body
+		if len(body) > 200 {
+			body = body[:200] + "..."
+		}
+		return nil, fmt.Errorf("statuses request failed: status %d - %s", resp.Status, body)
 	}
 
 	var statuses []Status
